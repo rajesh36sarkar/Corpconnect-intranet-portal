@@ -2,22 +2,25 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
-import { Building2, LogIn, Mail, Lock, Sparkles, Users, CalendarDays } from 'lucide-react';
+import { LogIn, Mail, Lock, Sparkles } from 'lucide-react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setIsSubmitting(true);
     setError('');
 
     const result = await login(email, password);
+
     if (result.success) {
       navigate('/dashboard');
     } else {
@@ -34,153 +37,267 @@ const Login = () => {
       setEmail('admin@demo.com');
       setPassword('admin123');
     }
+
     setError('');
   };
 
   return (
-    <div className="min-h-screen bg-brand-bg font-sans flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none" aria-hidden="true">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-brand-highlight/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-brand-secondary/30 rounded-full blur-3xl" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-accent/10 rounded-full blur-3xl" />
+    <div className="min-h-screen bg-[#f6f7f9] flex items-center justify-center p-4 overflow-hidden relative">
+
+      {/* Background Blur */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-10 left-10 w-72 h-72 bg-brand-highlight/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-brand-secondary/30 rounded-full blur-3xl" />
       </div>
 
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
+      {/* Main Container */}
+      <motion.div
+        initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-        className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 bg-white rounded-3xl shadow-2xl overflow-hidden z-10"
+        transition={{ duration: 0.5 }}
+        className="relative z-10 w-full max-w-7xl bg-white rounded-[32px] shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 min-h-[720px]"
       >
-        {/* LEFT PANEL - Brand Section */}
-        <div className="relative hidden lg:flex flex-col justify-between p-10 bg-gradient-to-br from-brand-bg via-white to-brand-secondary/30 border-r border-brand-accent">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-brand-highlight rounded-xl shadow-sm">
-              <Building2 className="h-5 w-5 text-text-primary" />
-            </div>
-            <span className="text-xs font-black tracking-[0.2em] text-text-secondary uppercase">Corpconnect Intranet Portal</span>
-          </div>
 
-          <div className="space-y-4">
-            <h2 className="text-3xl font-black tracking-tight text-text-primary leading-tight">
-              Connect.<br />
-              Collaborate.<br />
-              Celebrate.
-            </h2>
-            <p className="text-sm text-text-secondary leading-relaxed">
-              Your centralized hub for team collaboration, knowledge sharing, and workplace recognition.
-            </p>
-          </div>
+        {/* LEFT SIDE IMAGE SECTION */}
+        <div className="relative hidden lg:flex overflow-hidden">
 
-          <div className="flex items-center gap-4 text-xs text-text-muted">
-            <div className="flex items-center gap-1.5">
-              <Users className="h-3.5 w-3.5" />
-              <span>500+ Team Members</span>
+          {/* Background Image */}
+          <img
+            src="/login-image.png"
+            alt="Workspace"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-brand-highlight/30" />
+
+          {/* Content */}
+          <div className="relative z-10 flex flex-col justify-between w-full p-10 text-white">
+
+            {/* Logo */}
+            <div>
+              <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/10 px-5 py-3 rounded-2xl">
+
+                <img
+                  src="/brand-logo.svg"
+                  alt="CorpConnect"
+                  className="h-10 w-10 object-contain"
+                />
+
+                <div>
+                  <img
+                    src="/brand-name.svg"
+                    alt="CorpConnect"
+                    className="h-6 object-contain brightness-0 invert"
+                  />
+
+                  <p className="text-xs text-white/70 mt-1 tracking-wide">
+                    Enterprise Portal
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-1.5">
-              <CalendarDays className="h-3.5 w-3.5" />
-              <span>24/7 Access</span>
+
+            {/* Hero Text */}
+            <div className="max-w-lg">
+              <h1 className="text-6xl font-black leading-tight tracking-tight">
+                Connect.<br />
+                Collaborate.<br />
+                Celebrate.
+              </h1>
+
+              <p className="mt-6 text-lg leading-relaxed text-white/80">
+                Your centralized digital workspace for communication,
+                teamwork, recognition, and productivity.
+              </p>
+
+              {/* Stats */}
+              <div className="flex gap-4 mt-10">
+
+                <div className="flex-1 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-5">
+                  <h2 className="text-4xl font-black">500+</h2>
+                  <p className="text-sm text-white/70 mt-2">
+                    Team Members
+                  </p>
+                </div>
+
+                <div className="flex-1 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-5">
+                  <h2 className="text-4xl font-black">24/7</h2>
+                  <p className="text-sm text-white/70 mt-2">
+                    Collaboration
+                  </p>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Bottom Features */}
+            <div className="grid grid-cols-3 gap-4">
+
+              <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-4">
+                <p className="font-bold text-sm">
+                  Secure Access
+                </p>
+
+                <p className="text-xs text-white/70 mt-1">
+                  Enterprise-grade protection
+                </p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-4">
+                <p className="font-bold text-sm">
+                  Team Sync
+                </p>
+
+                <p className="text-xs text-white/70 mt-1">
+                  Real-time collaboration
+                </p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-4">
+                <p className="font-bold text-sm">
+                  Productivity
+                </p>
+
+                <p className="text-xs text-white/70 mt-1">
+                  Everything in one place
+                </p>
+              </div>
+
             </div>
           </div>
         </div>
 
-        {/* RIGHT PANEL - Login Form */}
-        <div className="p-8 sm:p-12 flex flex-col justify-center bg-white">
-          <div className="text-center lg:text-left mb-8">
-            <div className="mx-auto lg:mx-0 h-12 w-12 bg-brand-highlight rounded-2xl flex items-center justify-center mb-4 shadow-sm">
-              <Sparkles className="h-6 w-6 text-text-primary" />
+        {/* RIGHT SIDE LOGIN PANEL */}
+        <div className="flex items-center justify-center p-6 sm:p-10 lg:p-14 bg-white">
+
+          <div className="w-full max-w-md">
+
+            {/* Mobile Logo */}
+            <div className="flex lg:hidden flex-col items-center justify-center w-full mb-10">
+
+              <img
+                src="/brand-name.png"
+                alt="CorpConnect"
+                className="h-16 m-4 object-contain"
+              />
+
             </div>
-            <h1 className="text-2xl font-black text-text-primary tracking-tight">Welcome Back</h1>
-            <p className="text-sm text-text-secondary mt-1">Sign in to access your workspace</p>
-          </div>
+            {/* Header */}
+            <div className="mb-8">
+              <h1 className="text-4xl font-black text-text-primary tracking-tight">
+                Welcome Back
+              </h1>
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            <AnimatePresence mode="wait">
-              {error && (
-                <motion.div 
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  role="alert"
-                  aria-live="polite"
-                  className="bg-rose-50 border border-rose-200 text-rose-600 p-3 rounded-xl text-xs font-semibold flex items-start gap-2"
-                >
-                  <span aria-hidden="true">⚠️</span>
-                  <span>{error}</span>
-                </motion.div>
-              )}
-            </AnimatePresence>
+              <p className="text-text-secondary mt-2">
+                Sign in to access your workspace
+              </p>
+            </div>
 
-            <div className="space-y-3">
-              <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-text-primary h-4 w-4 transition-colors" />
+            {/* Form */}
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-5"
+            >
+
+              <AnimatePresence mode="wait">
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="bg-rose-50 border border-rose-200 text-rose-600 p-4 rounded-2xl text-sm"
+                  >
+                    {error}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Email */}
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-text-muted" />
+
                 <input
                   type="email"
+                  placeholder="Email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-brand-bg border border-brand-accent rounded-xl pl-11 pr-4 py-3 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-brand-highlight focus:ring-2 focus:ring-brand-highlight/20 transition-all"
-                  placeholder="Email address"
-                  required
                   disabled={isSubmitting}
+                  required
+                  className="w-full bg-[#f8fafb] border border-brand-accent rounded-2xl pl-12 pr-4 py-4 text-sm text-text-primary focus:outline-none focus:border-brand-highlight focus:ring-4 focus:ring-brand-highlight/20 transition-all"
                 />
               </div>
-              
-              <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-text-primary h-4 w-4 transition-colors" />
+
+              {/* Password */}
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-text-muted" />
+
                 <input
                   type="password"
+                  placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-brand-bg border border-brand-accent rounded-xl pl-11 pr-4 py-3 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-brand-highlight focus:ring-2 focus:ring-brand-highlight/20 transition-all"
-                  placeholder="Password"
-                  required
                   disabled={isSubmitting}
+                  required
+                  className="w-full bg-[#f8fafb] border border-brand-accent rounded-2xl pl-12 pr-4 py-4 text-sm text-text-primary focus:outline-none focus:border-brand-highlight focus:ring-4 focus:ring-brand-highlight/20 transition-all"
                 />
               </div>
-            </div>
 
-            <button 
-              type="submit" 
-              disabled={isSubmitting}
-              className={`w-full btn-primary py-3 text-sm flex items-center justify-center gap-2 ${isSubmitting ? 'cursor-not-allowed opacity-80' : ''}`}
-            >
-              {isSubmitting ? (
-                <div className="h-5 w-5 border-2 border-text-primary border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <>
-                  <LogIn className="h-5 w-5" />
-                  <span>Sign In</span>
-                </>
-              )}
-            </button>
+              {/* Button */}
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-brand-highlight hover:bg-brand-accent text-text-primary py-4 rounded-2xl font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+              >
+                {isSubmitting ? (
+                  <div className="h-5 w-5 border-2 border-text-primary border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <LogIn className="h-5 w-5" />
+                    Sign In
+                  </>
+                )}
+              </button>
 
-            {/* Demo Access Panel */}
-            <div className="bg-brand-secondary/30 border border-brand-accent rounded-xl p-4 space-y-3">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-text-secondary uppercase tracking-wider">
-                <Sparkles className="h-3.5 w-3.5" />
-                <span>Demo Access</span>
+              {/* Demo Access */}
+              <div className="bg-brand-secondary/30 border border-brand-accent rounded-2xl p-5 space-y-4">
+
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-secondary">
+                  <Sparkles className="h-4 w-4" />
+                  Demo Access
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+
+                  <button
+                    type="button"
+                    onClick={() => handleQuickFill('employee')}
+                    className="p-3 bg-white border border-brand-accent rounded-2xl hover:border-brand-highlight transition-all text-left"
+                  >
+                    <span className="block text-sm font-bold text-text-primary">
+                      👨‍💻 Employee
+                    </span>
+
+
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleQuickFill('admin')}
+                    className="p-3 bg-white border border-brand-accent rounded-2xl hover:border-brand-highlight transition-all text-left"
+                  >
+                    <span className="block text-sm font-bold text-text-primary">
+                      👩‍💼 Admin
+                    </span>
+
+
+                  </button>
+
+                </div>
               </div>
-              
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => handleQuickFill('employee')}
-                  className="p-2.5 text-left bg-white border border-brand-accent hover:border-brand-highlight rounded-xl transition-all group focus:outline-none focus:ring-2 focus:ring-brand-highlight"
-                >
-                  <span className="text-xs font-bold text-text-primary block">👨‍💻 Employee</span>
-                  <span className="text-[10px] text-text-muted truncate">employee@demo.com</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleQuickFill('admin')}
-                  className="p-2.5 text-left bg-white border border-brand-accent hover:border-brand-highlight rounded-xl transition-all group focus:outline-none focus:ring-2 focus:ring-brand-highlight"
-                >
-                  <span className="text-xs font-bold text-text-primary block">👩‍💼 Admin</span>
-                  <span className="text-[10px] text-text-muted truncate">admin@demo.com</span>
-                </button>
-              </div>
-            </div>
-          </form>
+
+            </form>
+          </div>
         </div>
       </motion.div>
     </div>

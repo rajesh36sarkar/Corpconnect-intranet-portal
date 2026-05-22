@@ -399,13 +399,6 @@ export const galleryImages = [
     date: "2025-11-12",
   },
   {
-    id: "4",
-    url: "/images/gallery-4.jpg",
-    title: "Annual Corporate Town Hall Meeting",
-    type: "image",
-    date: "2026-01-15",
-  },
-  {
     id: "5",
     url: "/images/gallery-5.jpg",
     title: "Akalpa Launch War-Room Deployment",
