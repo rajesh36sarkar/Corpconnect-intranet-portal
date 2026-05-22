@@ -84,10 +84,10 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       >
-        {/* Default redirect */}
-        <Route index element={<Navigate to="/dashboard" replace />} />
+        {/* Redirect root to dashboard */}
+        <Route index element={<Navigate to="dashboard" replace />} />
         
-        {/* Main Pages */}
+        {/* Main User Pages */}
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="recognition" element={<Recognition />} />
         <Route path="knowledge" element={<KnowledgeHub />} />
@@ -97,24 +97,24 @@ function AppRoutes() {
         <Route path="calendar" element={<EngagementCalendar />} />
         <Route path="profile" element={<Profile />} />
         
-        {/* Admin Routes */}
-        <Route path="admin" element={<AdminConsole />} />
-        <Route 
-          path="admin/moderation" 
-          element={
+        {/* Admin Routes - Nested to enforce protection */}
+        <Route path="admin">
+          <Route index element={
+            <ProtectedRoute adminOnly>
+              <AdminConsole />
+            </ProtectedRoute>
+          } />
+          <Route path="moderation" element={
             <ProtectedRoute adminOnly>
               <Moderation />
             </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="admin/analytics" 
-          element={
+          } />
+          <Route path="analytics" element={
             <ProtectedRoute adminOnly>
               <Analytics />
             </ProtectedRoute>
-          } 
-        />
+          } />
+        </Route>
         
         {/* 404 - Catch all unknown routes */}
         <Route path="*" element={<NotFound />} />
@@ -122,7 +122,6 @@ function AppRoutes() {
     </Routes>
   );
 }
-
 function App() {
   return (
     <BrowserRouter

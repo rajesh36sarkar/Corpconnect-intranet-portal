@@ -1,11 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+// Removed unused AnimatePresence import
 import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
 
 const Toast = ({ message, type = 'success', onClose, duration = 4000 }) => {
+  const timerRef = useRef(null);
+
+  // Handlers to pause/resume the auto-close timer on hover
+  const startTimer = () => {
+    timerRef.current = setTimeout(onClose, duration);
+  };
+
+  const clearTimer = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  };
+
   useEffect(() => {
-    const timer = setTimeout(onClose, duration);
-    return () => clearTimeout(timer);
+    startTimer();
+    return () => clearTimer();
   }, [onClose, duration]);
 
   const configs = {
@@ -29,21 +43,28 @@ const Toast = ({ message, type = 'success', onClose, duration = 4000 }) => {
   const config = configs[type] || configs.success;
 
   return (
-    <div className="fixed top-4 md:top-6 right-4 md:right-6 z-50">
-      <motion.div
-        initial={{ opacity: 0, x: 50, scale: 0.9 }}
-        animate={{ opacity: 1, x: 0, scale: 1 }}
-        exit={{ opacity: 0, x: 50, scale: 0.9 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-        className={`flex items-center gap-3 px-3 md:px-4 py-2.5 md:py-3 rounded-xl border shadow-lg ${config.bg} min-w-[280px] md:min-w-[300px] max-w-[90vw] md:max-w-[400px]`}
+    <motion.div
+      role="alert"
+      onMouseEnter={clearTimer}
+      onMouseLeave={startTimer}
+      initial={{ opacity: 0, x: 50, scale: 0.9 }}
+      animate={{ opacity: 1, x: 0, scale: 1 }}
+      exit={{ opacity: 0, x: 50, scale: 0.9 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+      // Moved fixed positioning here so exit animations aren't clipped
+      className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg ${config.bg} min-w-[300px] max-w-[400px]`}
+    >
+      {config.icon}
+      <p className={`text-sm font-medium flex-1 ${config.text}`}>{message}</p>
+      <button 
+        onClick={onClose} 
+        aria-label="Close notification"
+        // Changed bg-white/50 to black/5 for better contrast on light backgrounds
+        className="p-1 rounded-lg hover:bg-black/5 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400"
       >
-        {config.icon}
-        <p className={`text-xs md:text-sm font-medium flex-1 ${config.text}`}>{message}</p>
-        <button onClick={onClose} className="p-1 rounded-lg hover:bg-white/50 transition-colors">
-          <X className="h-3.5 w-3.5 text-gray-500" />
-        </button>
-      </motion.div>
-    </div>
+        <X className="h-4 w-4 text-gray-500" />
+      </button>
+    </motion.div>
   );
 };
 

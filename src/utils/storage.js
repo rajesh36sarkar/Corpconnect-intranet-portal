@@ -1,9 +1,8 @@
-/**
- * Corporate Intranet Storage Manager
- * Secure, scoped localStorage wrapper with elegant error handling
- */
+const STORAGE_PREFIX = "corpconnect_";
 
-const STORAGE_PREFIX = 'corpconnect_';
+// Helper to keep key scoping logic DRY
+const getScopedKey = (key) =>
+  key.startsWith(STORAGE_PREFIX) ? key : `${STORAGE_PREFIX}${key}`;
 
 export const storage = {
   /**
@@ -14,42 +13,38 @@ export const storage = {
    */
   get: (key, defaultValue = null) => {
     try {
-      const scopedKey = key.startsWith(STORAGE_PREFIX) ? key : `${STORAGE_PREFIX}${key}`;
-      const item = localStorage.getItem(scopedKey);
-      
-      if (!item) return defaultValue;
-      
-      // Safe JSON parsing with graceful fallback
-      return JSON.parse(item);
+      const item = localStorage.getItem(getScopedKey(key));
+      return item ? JSON.parse(item) : defaultValue;
     } catch (error) {
       console.warn(`[Storage] Failed to read "${key}":`, error.message);
       return defaultValue;
     }
   },
-  
+
   /**
    * Store data in localStorage with JSON serialization
    * @param {string} key - Storage key
    * @param {*} value - Value to store
+   * @returns {boolean} True if successful, false if storage failed (e.g., quota exceeded)
    */
   set: (key, value) => {
     try {
-      const scopedKey = key.startsWith(STORAGE_PREFIX) ? key : `${STORAGE_PREFIX}${key}`;
-      localStorage.setItem(scopedKey, JSON.stringify(value));
+      localStorage.setItem(getScopedKey(key), JSON.stringify(value));
+      return true;
     } catch (error) {
       console.error(`[Storage] Failed to write "${key}":`, error.message);
+      return false;
     }
   },
-  
+
   /**
    * Remove specific item from storage
    * @param {string} key - Storage key to remove
    */
   remove: (key) => {
-    const scopedKey = key.startsWith(STORAGE_PREFIX) ? key : `${STORAGE_PREFIX}${key}`;
-    localStorage.removeItem(scopedKey);
+    localStorage.removeItem(getScopedKey(key));
   },
-  
+
   /**
    * Clear workspace data while preserving user session
    * Protected keys remain untouched
@@ -59,28 +54,36 @@ export const storage = {
       const protectedKeys = [
         `${STORAGE_PREFIX}user`,
         `${STORAGE_PREFIX}user_session`,
-        `${STORAGE_PREFIX}theme_preference`
+        `${STORAGE_PREFIX}theme_preference`,
       ];
 
       Object.keys(localStorage).forEach((storageKey) => {
-        if (storageKey.startsWith(STORAGE_PREFIX) && !protectedKeys.includes(storageKey)) {
+        if (
+          storageKey.startsWith(STORAGE_PREFIX) &&
+          !protectedKeys.includes(storageKey)
+        ) {
           localStorage.removeItem(storageKey);
         }
       });
     } catch (error) {
-      console.error('[Storage] Workspace clear failed:', error.message);
+      console.error("[Storage] Workspace clear failed:", error.message);
     }
   },
 
   /**
-   * Full storage reset - use with caution
+   * Full storage reset - Scoped only to this application
    */
   clearAll: () => {
-    if (window.confirm('This will clear all application data. Continue?')) {
-      localStorage.clear();
-      window.location.reload();
+    try {
+      Object.keys(localStorage).forEach((storageKey) => {
+        if (storageKey.startsWith(STORAGE_PREFIX)) {
+          localStorage.removeItem(storageKey);
+        }
+      });
+    } catch (error) {
+      console.error("[Storage] Full clear failed:", error.message);
     }
-  }
+  },
 };
 
 export default storage;

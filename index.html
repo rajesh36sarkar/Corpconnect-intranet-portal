@@ -2,17 +2,44 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
     
+    <!-- Primary SEO Meta Tags -->
     <title>CorpConnect | Corporate Intranet Portal</title>
-    <meta name="description" content="Enterprise collaboration platform for team communication, recognition, and knowledge sharing" />
-    <meta name="theme-color" content="#F8F6F4" />
+    <meta name="description" content="CorpConnect is an enterprise-grade collaboration platform for team communication, recognition, document management, and knowledge sharing." />
+    <meta name="keywords" content="intranet, corporate portal, team collaboration, employee recognition, knowledge management, enterprise software" />
+    <meta name="author" content="CorpConnect Team" />
+    <link rel="canonical" href="https://corpconnect.example.com" />
 
+    <!-- Open Graph / Facebook (Social Media Preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CorpConnect | Corporate Intranet Portal" />
+    <meta property="og:description" content="Streamlining team communication and knowledge sharing for the modern workplace." />
+    <meta property="og:image" content="/og-image.png" /> 
+    <meta property="og:url" content="https://corpconnect.example.com" />
+    <meta property="og:site_name" content="CorpConnect" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CorpConnect | Corporate Intranet Portal" />
+    <meta name="twitter:description" content="Enterprise collaboration platform for team communication and recognition." />
+    <meta name="twitter:image" content="/og-image.png" />
+
+    <!-- Favicon & PWA Icons -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#F8F6F4" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="CorpConnect" />
+
+    <!-- Preconnect to Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <style>
+      /* Preloader kept for instant feedback */
       html, body {
         background-color: #F8F6F4;
         margin: 0;
@@ -39,9 +66,7 @@
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
       }
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
+      @keyframes spin { to { transform: rotate(360deg); } }
     </style>
   </head>
   <body class="bg-brand-bg antialiased">
@@ -54,7 +79,18 @@
 
     <script type="module" src="/src/main.jsx"></script>
 
+    <!-- Theme Detection Script (Prevents Flash of Light Mode) -->
     <script>
+      (function() {
+        const theme = localStorage.getItem('theme') || 
+                      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+
       window.addEventListener('DOMContentLoaded', () => {
         const preloader = document.getElementById('app-preloader');
         if (preloader) {

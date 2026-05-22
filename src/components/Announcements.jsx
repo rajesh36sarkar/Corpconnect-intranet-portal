@@ -22,37 +22,49 @@ const Announcements = () => {
     return 'bg-brand-secondary text-text-primary border-brand-accent';
   };
 
+  // Helper to safely format dates
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Recent';
+    const date = new Date(dateString);
+    return isNaN(date.getTime()) ? 'Recent' : date.toLocaleDateString();
+  };
+
   return (
     <div className="card">
-      <div className="flex items-center justify-between mb-4 md:mb-5">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2.5">
           <div className="p-2 bg-brand-secondary rounded-lg border border-brand-accent">
             <Megaphone className="h-4 w-4 text-text-primary" />
           </div>
           <div>
-            <h3 className="font-bold text-sm text-text-primary uppercase tracking-wide">Announcements</h3>
+            <h3 className="font-bold text-sm text-text-primary uppercase tracking-wide">
+              Announcements
+            </h3>
             <p className="text-xs text-text-muted">Company updates & news</p>
           </div>
         </div>
 
         <div className="flex items-center gap-1.5 px-2 py-1 bg-brand-secondary rounded-md text-[10px] font-bold text-text-primary">
-          <Radio className="h-3 w-3 animate-pulse" />
-          <span className="hidden sm:inline">Live</span>
+          <Radio className="h-3 w-3 animate-pulse text-rose-500" />
+          <span>Live</span>
         </div>
       </div>
 
-      <div className="space-y-3 max-h-[400px] overflow-y-auto custom-scrollbar">
+      {/* Announcements List */}
+      <ul className="space-y-3 max-h-[400px] overflow-y-auto custom-scrollbar">
         {announcements.map((ann, idx) => (
-          <motion.div
+          <motion.li
             key={ann.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05 }}
             whileHover={{ x: 4 }}
-            className="p-3 md:p-4 bg-brand-secondary/30 rounded-xl border border-brand-accent hover:border-brand-highlight transition-all"
+            // ADDED: 'group' class here so the child's group-hover works
+            className="group p-4 bg-brand-secondary/30 rounded-xl border border-brand-accent hover:border-brand-highlight transition-all cursor-pointer"
           >
             <div className="flex items-center justify-between gap-2 mb-2">
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-2">
                 <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold uppercase border ${getCategoryStyles(ann.category)}`}>
                   {ann.category || 'Update'}
                 </span>
@@ -60,26 +72,28 @@ const Announcements = () => {
                   <Pin className="h-3 w-3 text-text-muted rotate-45" />
                 )}
               </div>
+              {/* This will now correctly appear on hover */}
               <ArrowUpRight className="h-3.5 w-3.5 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
             
             <h4 className="font-bold text-text-primary text-sm mb-1">{ann.title}</h4>
-            <p className="text-sm text-text-secondary leading-relaxed line-clamp-2">{ann.content}</p>
+            <p className="text-sm text-text-secondary leading-relaxed">{ann.content}</p>
             
             <div className="flex items-center gap-2 mt-3 text-xs text-text-muted">
               <Calendar className="h-3 w-3" />
-              <span>{new Date(ann.date).toLocaleDateString()}</span>
+              <span>{formatDate(ann.date)}</span>
             </div>
-          </motion.div>
+          </motion.li>
         ))}
 
+        {/* Empty State */}
         {announcements.length === 0 && (
           <div className="text-center py-8">
             <Bell className="h-8 w-8 text-text-muted mx-auto mb-2" />
             <p className="text-text-muted">No announcements yet</p>
           </div>
         )}
-      </div>
+      </ul>
     </div>
   );
 };

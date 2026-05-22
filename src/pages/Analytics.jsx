@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+// Removed unused 'Calendar' import
 import { 
-  TrendingUp, Users, Heart, MessageCircle, Calendar, 
+  TrendingUp, Users, Heart, MessageCircle, 
   Award, Activity, BarChart3, PieChart, Download,
-  ArrowUp, ArrowDown, Clock, Eye, UserPlus, Share2,
-  DollarSign, Target, Zap
+  ArrowUp, ArrowDown, Clock, Eye, UserPlus, Share2
 } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+// Removed unused 'useAuth' since user isn't referenced in this view
 
 const Analytics = () => {
-  const { user } = useAuth();
   const [timeRange, setTimeRange] = useState('week');
-  const [analytics, setAnalytics] = useState({
+  const [analytics] = useState({
     users: { total: 156, active: 89, new: 12 },
     engagement: { recognitions: 342, posts: 89, comments: 156, likes: 423 },
     events: { total: 24, upcoming: 8, completed: 16 },
     satisfaction: { rating: 4.6, responses: 78 }
   });
 
+  // Chart data would come from API in production
   const weeklyData = [45, 52, 48, 61, 55, 67, 72];
   const departmentData = [
     { name: 'Engineering', value: 45, color: '#C4DFDF' },
@@ -34,7 +34,7 @@ const Analytics = () => {
   ];
 
   return (
-    <div className="space-y-5 md:space-y-6 pb-12">
+    <div className="space-y-6 pb-12">
       {/* Header */}
       <motion.div 
         initial={{ opacity: 0, y: -10 }}
@@ -52,12 +52,13 @@ const Analytics = () => {
         </div>
         
         <div className="flex gap-2">
-          <div className="flex bg-brand-secondary/30 p-1 rounded-xl overflow-x-auto custom-scrollbar-horizontal">
+          <div className="flex bg-brand-secondary/30 p-1 rounded-xl" role="group" aria-label="Time range filter">
             {['day', 'week', 'month', 'year'].map(range => (
               <button
                 key={range}
                 onClick={() => setTimeRange(range)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all capitalize whitespace-nowrap ${
+                aria-pressed={timeRange === range}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all capitalize focus:outline-none focus:ring-2 focus:ring-brand-highlight ${
                   timeRange === range 
                     ? 'bg-white shadow-sm text-text-primary border border-brand-accent'
                     : 'text-text-muted hover:text-text-primary'
@@ -67,7 +68,10 @@ const Analytics = () => {
               </button>
             ))}
           </div>
-          <button className="p-2 rounded-lg border border-brand-accent hover:bg-brand-secondary transition-colors">
+          <button 
+            aria-label="Download analytics report"
+            className="p-2 rounded-lg border border-brand-accent hover:bg-brand-secondary transition-colors focus:outline-none focus:ring-2 focus:ring-brand-highlight"
+          >
             <Download className="h-4 w-4 text-text-muted" />
           </button>
         </div>
@@ -77,7 +81,7 @@ const Analytics = () => {
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
       >
         {stats.map((stat, idx) => (
           <motion.div
@@ -98,28 +102,28 @@ const Analytics = () => {
                 {stat.change}
               </div>
             </div>
-            <div className="text-xl md:text-2xl font-black text-text-primary">{stat.value}</div>
-            <div className="text-[10px] md:text-xs text-text-muted mt-1">{stat.label}</div>
+            <div className="text-2xl font-black text-text-primary">{stat.value}</div>
+            <div className="text-xs text-text-muted mt-1">{stat.label}</div>
           </motion.div>
         ))}
       </motion.div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Weekly Activity Chart */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           className="card"
         >
-          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Activity className="h-4 w-4 text-text-primary" />
               <h3 className="font-bold text-text-primary">Weekly Activity</h3>
             </div>
             <span className="text-xs text-text-muted">Last 7 days</span>
           </div>
-          <div className="flex items-end gap-2 h-48">
+          <div className="flex items-end gap-2 h-48" aria-hidden="true">
             {weeklyData.map((value, idx) => (
               <div key={idx} className="flex-1 flex flex-col items-center gap-2">
                 <motion.div 
@@ -154,7 +158,7 @@ const Analytics = () => {
                   <span className="text-text-primary">{dept.name}</span>
                   <span className="text-text-muted">{dept.value}%</span>
                 </div>
-                <div className="h-2 bg-brand-secondary rounded-full overflow-hidden">
+                <div className="h-2 bg-brand-secondary rounded-full overflow-hidden" aria-hidden="true">
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${dept.value}%` }}
@@ -173,7 +177,7 @@ const Analytics = () => {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6"
+        className="grid grid-cols-1 md:grid-cols-3 gap-6"
       >
         {/* Top Contributors */}
         <div className="card md:col-span-1">
@@ -181,22 +185,22 @@ const Analytics = () => {
             <Award className="h-4 w-4 text-amber-500" />
             <h3 className="font-bold text-text-primary">Top Contributors</h3>
           </div>
-          <div className="space-y-3">
+          <ul className="space-y-3">
             {[
-              { name: 'Rajesh Sharma', contributions: 45, avatar: '👨‍💻', role: 'Senior Developer' },
-              { name: 'Priya Mehta', contributions: 38, avatar: '👩‍💼', role: 'HR Manager' },
-              { name: 'Amit Kumar', contributions: 32, avatar: '👨‍🔧', role: 'Product Lead' }
+              { name: 'Rajesh Sharma', contributions: 45, avatar: '👨‍💻' },
+              { name: 'Priya Mehta', contributions: 38, avatar: '👩‍💼' },
+              { name: 'Amit Kumar', contributions: 32, avatar: '👨‍🔧' }
             ].map((user, idx) => (
-              <div key={idx} className="flex items-center gap-3 p-2 rounded-lg hover:bg-brand-secondary/30 transition-colors">
-                <div className="text-xl">{user.avatar}</div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-text-primary text-sm truncate">{user.name}</p>
-                  <p className="text-[10px] md:text-xs text-text-muted truncate">{user.role}</p>
+              <li key={idx} className="flex items-center gap-3 p-2 rounded-lg hover:bg-brand-secondary/30 transition-colors">
+                <div className="text-xl" aria-hidden="true">{user.avatar}</div>
+                <div className="flex-1">
+                  <p className="font-medium text-text-primary text-sm">{user.name}</p>
+                  <p className="text-xs text-text-muted">{user.contributions} contributions</p>
                 </div>
-                <div className="text-base md:text-lg font-bold text-text-muted">#{idx + 1}</div>
-              </div>
+                <div className="text-lg font-bold text-text-muted" aria-label={`Rank ${idx + 1}`}>#{idx + 1}</div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
         {/* Engagement Trends */}
@@ -205,26 +209,26 @@ const Analytics = () => {
             <BarChart3 className="h-4 w-4 text-text-primary" />
             <h3 className="font-bold text-text-primary">Engagement Trends</h3>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="text-center p-3 bg-brand-secondary/30 rounded-xl">
               <Heart className="h-5 w-5 text-rose-500 mx-auto mb-1" />
-              <div className="text-lg md:text-xl font-black text-text-primary">{analytics.engagement.likes}</div>
-              <div className="text-[9px] md:text-[10px] text-text-muted">Total Likes</div>
+              <div className="text-xl font-black text-text-primary">{analytics.engagement.likes}</div>
+              <div className="text-[10px] text-text-muted">Total Likes</div>
             </div>
             <div className="text-center p-3 bg-brand-secondary/30 rounded-xl">
               <MessageCircle className="h-5 w-5 text-blue-500 mx-auto mb-1" />
-              <div className="text-lg md:text-xl font-black text-text-primary">{analytics.engagement.comments}</div>
-              <div className="text-[9px] md:text-[10px] text-text-muted">Comments</div>
+              <div className="text-xl font-black text-text-primary">{analytics.engagement.comments}</div>
+              <div className="text-[10px] text-text-muted">Comments</div>
             </div>
             <div className="text-center p-3 bg-brand-secondary/30 rounded-xl">
               <Share2 className="h-5 w-5 text-emerald-500 mx-auto mb-1" />
-              <div className="text-lg md:text-xl font-black text-text-primary">234</div>
-              <div className="text-[9px] md:text-[10px] text-text-muted">Shares</div>
+              <div className="text-xl font-black text-text-primary">234</div>
+              <div className="text-[10px] text-text-muted">Shares</div>
             </div>
             <div className="text-center p-3 bg-brand-secondary/30 rounded-xl">
               <Eye className="h-5 w-5 text-purple-500 mx-auto mb-1" />
-              <div className="text-lg md:text-xl font-black text-text-primary">2.4k</div>
-              <div className="text-[9px] md:text-[10px] text-text-muted">Views</div>
+              <div className="text-xl font-black text-text-primary">2.4k</div>
+              <div className="text-[10px] text-text-muted">Views</div>
             </div>
           </div>
         </div>
@@ -236,32 +240,34 @@ const Analytics = () => {
         animate={{ opacity: 1, y: 0 }}
         className="card"
       >
-        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-text-primary" />
             <h3 className="font-bold text-text-primary">Recent Activity</h3>
           </div>
-          <button className="text-xs text-text-muted hover:text-text-primary transition-colors">View All →</button>
+          <button className="text-xs font-medium text-brand-highlight hover:text-brand-accent transition-colors focus:outline-none focus:underline">
+            View All &rarr;
+          </button>
         </div>
-        <div className="space-y-3">
+        <ul className="space-y-3">
           {[
             { action: 'New user joined', user: 'Sarah Johnson', time: '2 min ago', icon: UserPlus },
             { action: 'Posted in Forum', user: 'Mike Chen', time: '15 min ago', icon: MessageCircle },
             { action: 'Received appreciation', user: 'Ananya Desai', time: '1 hour ago', icon: Heart },
             { action: 'New department update', user: 'HR Team', time: '3 hours ago', icon: TrendingUp }
           ].map((activity, idx) => (
-            <div key={idx} className="flex items-center gap-3 p-2 rounded-lg hover:bg-brand-secondary/30 transition-colors">
+            <li key={idx} className="flex items-center gap-3 p-2 rounded-lg hover:bg-brand-secondary/30 transition-colors">
               <div className="p-1.5 bg-brand-secondary rounded-lg">
-                <activity.icon className="h-4 w-4 text-text-muted" />
+                <activity.icon className="h-4 w-4 text-text-muted" aria-hidden="true" />
               </div>
-              <div className="flex-1 min-w-0">
+              <div className="flex-1">
                 <p className="text-sm text-text-primary">{activity.action}</p>
                 <p className="text-xs text-text-muted">by {activity.user}</p>
               </div>
-              <div className="text-xs text-text-muted whitespace-nowrap">{activity.time}</div>
-            </div>
+              <div className="text-xs text-text-muted">{activity.time}</div>
+            </li>
           ))}
-        </div>
+        </ul>
       </motion.div>
     </div>
   );

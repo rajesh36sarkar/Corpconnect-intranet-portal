@@ -76,7 +76,7 @@ Follow these steps to run CorpConnect locally.
 
 
 ### 🌐 Deployment Links
-Live Demo: https://corporate-intranet-portal.vercel.app 
+Live Demo: https://corpconnect-intranet-portal.vercel.app/login
 Repository: https://github.com/rajesh36sarkar/Corpconnect-intranet-portal.git
 
 ### 🤖 AI Tools Used
