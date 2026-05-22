@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
+    
+    <title>CorpConnect | Corporate Intranet Portal</title>
+    <meta name="description" content="Enterprise collaboration platform for team communication, recognition, and knowledge sharing" />
+    <meta name="theme-color" content="#F8F6F4" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <style>
+      html, body {
+        background-color: #F8F6F4;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow-x: hidden;
+      }
+      #app-preloader {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #F8F6F4;
+        z-index: 9999;
+        transition: opacity 0.4s ease-out;
+      }
+      .pulse-ring {
+        width: 32px;
+        height: 32px;
+        border: 2px solid #D2E9E9;
+        border-top-color: #C4DFDF;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body class="bg-brand-bg antialiased">
+    
+    <div id="app-preloader">
+      <div class="pulse-ring"></div>
+    </div>
+
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.jsx"></script>
+
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        const preloader = document.getElementById('app-preloader');
+        if (preloader) {
+          preloader.style.opacity = '0';
+          setTimeout(() => preloader.remove(), 400);
+        }
+      });
+    </script>
+  </body>
+</html>
