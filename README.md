@@ -255,7 +255,7 @@ The project walkthrough video demonstrates:
 ## Clone Repository
 
 ```bash
-git clone <your-github-repo>
+git clone https://github.com/rajesh36sarkar/Corpconnect-intranet-portal.git
 ```
 
 ## Navigate to Project
@@ -286,9 +286,8 @@ npm run build
 
 # 🌐 Deployment
 
-The project can be deployed easily on:
-- Vercel
-- Netlify
+The project is deployed easily on:
+- https://corpconnect-intranet-portal.vercel.app/login
 
 ---
 
@@ -312,6 +311,10 @@ No backend server or database integration was implemented.
 Name: Rajesh Kumar Sarkar  
 Role Applied: AI-First Frontend Developer  
 Assessment Company: 2COMS Consulting Pvt Ltd
+Portfolio - https://rajesh36sarkar.vercel.app/
+Linkedin - https://www.linkedin.com/in/rajesh36sarkar/
+email - rajesh36.sarkar@gmailcom
+WhatsApp - 7478404020
 
 ---
 
