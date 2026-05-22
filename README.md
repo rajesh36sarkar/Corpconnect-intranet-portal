@@ -308,13 +308,17 @@ No backend server or database integration was implemented.
 
 # 👨‍💻 Candidate Information
 
-Name: Rajesh Kumar Sarkar  
-Role Applied: AI-First Frontend Developer  
-Assessment Company: 2COMS Consulting Pvt Ltd
-Portfolio - https://rajesh36sarkar.vercel.app/
-Linkedin - https://www.linkedin.com/in/rajesh36sarkar/
-email - rajesh36.sarkar@gmailcom
-WhatsApp - 7478404020
+**Name:** Rajesh Kumar Sarkar  
+**Role Applied:** AI-First Frontend Developer  
+**Assessment Company:** 2COMS Consulting Pvt Ltd  
+
+## 🔗 Professional Links
+
+- Portfolio: https://rajesh36sarkar.vercel.app/
+- LinkedIn: https://www.linkedin.com/in/rajesh36sarkar/
+- Loom Video Link :  
+- Email: rajesh36.sarkar@gmail.com
+- WhatsApp: +91 7478404020
 
 ---
 
